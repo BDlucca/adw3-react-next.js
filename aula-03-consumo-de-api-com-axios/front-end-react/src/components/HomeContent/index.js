@@ -10,6 +10,8 @@ import axios from "axios";
 const HomeContent = () => {
   //Criando um estado para lista de jogos
   const [games, setGames] = useState([]);
+  //Criando um estado para o carregamento da pagina
+  const [Loading, setLoading] = useState(true)
 
   //Criando o bloco do useEffect
   useEffect(() => {
@@ -21,6 +23,8 @@ const HomeContent = () => {
         // console.log(response.data.games);
       } catch (error) {
         console.log(error);
+      } finally {
+        setTimeout(() => setLoading(false), 3000)
       }
     };
     fetchGames();
@@ -50,20 +54,22 @@ const HomeContent = () => {
           <div className={styles.title}>
             <h2>Lista de jogos</h2>
           </div>
-          {/* <Loading /> */}
+          (loading ? (
+           <Loading Loading={Loading}/>
+          ) :(
           <div className={styles.games} id={styles.games}>
             {/* Lista de jogos irá aqui */}
-            {games.map((games) => {
-              <ul key={games._id} className={styles.listname}>
+            {games.map((game) => {
+              <ul key={game._id} className={styles.listname}>
                 <div className={styles.gameImg}>
                   <img src="images/games_cd_cover.png" alt="Jogos em estoque" />
                 </div>
                 <div className={styles.gameInfo}>
-                  <h3>{games.title}</h3>
-                  <li>Plataforma: {games.description.plataform}</li>
-                  <li>Genero: {games.description.genre}</li>
+                  <h3>{game.title}</h3>
+                  <li>Plataforma: {game.description.plataform}</li>
+                  <li>Genero: {game.description.genre}</li>
                   <li>Classificaçao: {games.description.rating}</li>
-                  <li>Ano: {games.year}</li>
+                  <li>Ano: {game.year}</li>
                   <li>
                     Preço:
                     {game.price.tolocaleString("pt-br", {
@@ -89,6 +95,7 @@ const HomeContent = () => {
               </ul>;
             })}
           </div>
+          ))
         </div>
       </div>
     </>
